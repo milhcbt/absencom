@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
+           xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0"
+           xmlns:jaxws="http://cxf.apache.org/blueprint/jaxws" xmlns:camel="http://camel.apache.org/schema/blueprint"
+           xsi:schemaLocation="
+	 		http://www.springframework.org/schema/beans 
+	 		http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/context 
+      http://www.springframework.org/schema/context/spring-context.xsd
+      http://www.osgi.org/xmlns/blueprint/v1.0.0
+      http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
+    
+    
+    <ext:property-placeholder placeholder-prefix="$[" placeholder-suffix="]" />
+
+    <!-- sesuaikan dengan nama file config yang ada di folder
+    etc di servicemix -->
+    <cm:property-placeholder persistent-id="com.codencare.esb">
+        <cm:default-properties>
+            <cm:property name="storage" value="$[karaf.base]/etc/"/>
+        </cm:default-properties>
+    </cm:property-placeholder>
+    
+    <!-- contoh membuat connector bean ke dbms (mysql -->
+    <bean class="org.apache.commons.dbcp.BasicDataSource" id="h2hDB">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <!--
+        <property name="serverName" value="localhost"></property>
+        <property name="databaseName" value="watcher"></property>
+        <property name="port" value="3306"></property>
+        -->
+        <property name="url" value="jdbc:mysql://localhost/h2h"/>  
+        <property name="username" value="root"></property>
+        <property name="password" value=""></property>
+    </bean>
+    <!-- contoh menggunakan java bean untuk melakukan 
+    pemprosesan pesan -->
+    <bean id="sampleProc" class="com.codencare.esb.processor.SampleProcessor">
+        <property name="msg" value="${message}"/>
+    </bean>
+    <!-- contoh koneksi ke mongoDB -->
+    <bean id="gpsDb" class="com.mongodb.Mongo">
+        <!-- <argument index="0" value="localhost"/> -->
+    </bean>
+    <!--    <bean id="gpsDb" class="com.mongodb.Mongo">
+        <constructor-arg index="0">
+            <bean class="com.mongodb.MongoURI">
+                <constructor-arg index="0" value="mongodb://username:password@host:port/db" />
+                <constructor-arg index="0" value="mongodb://localhost/test" />
+            </bean>
+        </constructor-arg>
+    </bean>-->
+
+    
+    <camelContext xmlns="http://camel.apache.org/schema/blueprint">
+        <route>
+            <!-- contoh menerima pesan dari socket pakai netty -->
+            <!--<from uri="netty:tcp://{{source-ip}}:{{source-port}}?sync=false&amp;backlog=128&amp;allowDefaultCodec=false&amp;textline=false&amp;delimiter=NULL" />-->
+            
+            <!-- contoh mengirim sesuatu dari/berdasarkan timer -->
+            <from uri="timer://foo?fixedRate=true&amp;period=2000"/>
+            
+            <process ref="sampleProc" />
+            <!-- contoh kirim ke database mongodb -->
+            <!--<to uri="mongodb:gpsDb?database=test&amp;collection=gps&amp;operation=coba" />-->
+            <!-- contoh menampilkan pesan ke logger -->
+            <to uri="log:id.ac.ittelkom" />
+            
+            <!-- contoh mengirim pesan ke socket pakai netty -->
+            <!--<to uri="netty:tcp://{{target-ip}}:{{target-port}}?sync=false&amp;backlog=128&amp;allowDefaultCodec=false&amp;textline=false&amp;delimiter=NULL" />-->
+        </route>
+    </camelContext>
+</blueprint>
