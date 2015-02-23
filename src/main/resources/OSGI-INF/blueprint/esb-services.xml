@@ -24,14 +24,14 @@
     </cm:property-placeholder>
     
     <!-- contoh membuat connector bean ke dbms (mysql -->
-    <bean class="org.apache.commons.dbcp.BasicDataSource" id="h2hDB">
+    <bean class="org.apache.commons.dbcp.BasicDataSource" id="testdb">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <!--
-        <property name="serverName" value="localhost"></property>
+        
+<!--        <property name="serverName" value="localhost"></property>
         <property name="databaseName" value="watcher"></property>
-        <property name="port" value="3306"></property>
-        -->
-        <property name="url" value="jdbc:mysql://localhost/h2h"/>  
+        <property name="port" value="3306"></property>-->
+        
+        <property name="url" value="jdbc:mysql://localhost/mysql"/>  
         <property name="username" value="root"></property>
         <property name="password" value=""></property>
     </bean>
@@ -41,9 +41,9 @@
         <property name="msg" value="${message}"/>
     </bean>
     <!-- contoh koneksi ke mongoDB -->
-    <bean id="gpsDb" class="com.mongodb.Mongo">
-        <!-- <argument index="0" value="localhost"/> -->
-    </bean>
+    <!--    <bean id="gpsDb" class="com.mongodb.Mongo">
+         <argument index="0" value="localhost"/> 
+    </bean>-->
     <!--    <bean id="gpsDb" class="com.mongodb.Mongo">
         <constructor-arg index="0">
             <bean class="com.mongodb.MongoURI">
@@ -61,8 +61,15 @@
             
             <!-- contoh mengirim sesuatu dari/berdasarkan timer -->
             <from uri="timer://foo?fixedRate=true&amp;period=2000"/>
-            
+            <!-- contoh menggunakan processor -->
             <process ref="sampleProc" />
+            <!-- contoh query ke database  pakai jdbc -->
+            <setBody>
+                <constant>select * from db</constant>
+            </setBody>
+            <to uri="jdbc:testdb"/>
+            
+            
             <!-- contoh kirim ke database mongodb -->
             <!--<to uri="mongodb:gpsDb?database=test&amp;collection=gps&amp;operation=coba" />-->
             <!-- contoh menampilkan pesan ke logger -->

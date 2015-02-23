@@ -17,7 +17,7 @@ import org.junit.Test;
  *
  * @author abah
  */
-public class SQLProcessorUnitTest extends CamelTestSupport {
+public class CamelSampleUnitTest extends CamelTestSupport {
 
     @EndpointInject(uri = "mock:result")
     protected MockEndpoint resultEndpoint;
