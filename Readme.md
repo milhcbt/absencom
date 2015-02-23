@@ -2,8 +2,8 @@ sample component for servicemix
 for ittelkom :)
 
 tata cara, setelah clone project ini:<br/>
-1. Read *.pom dulu supaya paham<br/>
-2. Download servicemix versi 5.x.x, jangan lupa sesuaikan versi camelnya, antara yang ada diservice mix dengan yang ada di pom.xml<br/>
+1. Read *.pom dulu supaya paham, pom adalah konfigurasi untuk membangun java mengunakan maven, jika belum tahun maven bisa lihat di http://maven.apache.org/ <br/>
+2. Download servicemix versi 5.x.x (http://servicemix.apache.org/), jangan lupa sesuaikan versi camelnya, antara yang ada diservice mix dengan yang ada di pom.xml<br/>
 3. Ektrak servicemix kemana aja sesuka hati tapi sebaiknya ditempat gampang diakses dan tidak memiliki spasi pada nama folder<br/>
 4. sesuaikan  <custom.build.directory>../apache-servicemix-5.x.x/deploy</custom.build.directory> pada file *.pom<br/>
 5. copy file com.codencare.cfg ke etc di folder servicemix<br/>
