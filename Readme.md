@@ -15,7 +15,7 @@ tata cara, setelah clone project ini:<br/>
 
 
 berikut daftar bundle yang terinstall sebagai acuan
-
+<pre>
 karaf@root> list
 START LEVEL 100 , List Threshold: 50
    ID   State         Blueprint      Spring    Level  Name
@@ -66,3 +66,4 @@ START LEVEL 100 , List Threshold: 50
 [ 233] [Active     ] [            ] [       ] [   50] camel-jdbc (2.14.1)
 [ 234] [Active     ] [            ] [       ] [   80] Commons DBCP (1.4)
 [ 235] [Active     ] [            ] [       ] [   80] Oracle Corporation's JDBC Driver for MySQL (5.1.34)
+</pre>
